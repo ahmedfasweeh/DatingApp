@@ -18,6 +18,7 @@ export class UserService {
   baseUrl = environment.apiUrl;
   hubUrl=environment.hubUrl;
 token :string;
+user: string;
 
 private hubConnection:HubConnection;
 private messageThreadSource= new BehaviorSubject<Messages[]>([]);
@@ -30,6 +31,17 @@ messageThread$=this.messageThreadSource.asObservable();
   createHubConnection(otherUsername: number)
 {
   debugger
+  this.
+  getUser(otherUsername).
+    subscribe((res: User) =>
+    {   
+      this.user = res.username;
+     
+    }, error => { console.error(error); }
+    
+    )
+
+
 this.token= localStorage.getItem('token');
 
   this.hubConnection= new HubConnectionBuilder()
@@ -57,7 +69,7 @@ this.hubConnection.on('NewMessage',message=>
 
 this.hubConnection.on('UpdateGroup',(group:Group)=>
 {
- if(group.connections.some(x=>x.username===otherUsername))
+ if(group.connections.some(x=>x.username===this.user))
  {
    this.messageThread$.pipe(take(1)).subscribe(messages=>{
      messages.forEach(message=>{
